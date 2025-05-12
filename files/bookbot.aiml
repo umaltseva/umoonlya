@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AIML Knowledge Base for Personalized Book Recommendation Chatbot (BookBot) -->
+<aiml version="2.0">
+
+  <!-- Basic Greetings and Self-Introduction -->
+  <category>
+    <pattern>HELLO</pattern>
+    <template>Hello! I’m BookBot, your personal book recommendation assistant. What’s your name?</template>
+  </category>
+  <category>
+    <pattern>HI</pattern>
+    <template><srai>HELLO</srai></template>
+  </category>
+  <category>
+    <pattern>HEY</pattern>
+    <template><srai>HELLO</srai></template>
+  </category>
+  
+  <!-- Catch user giving name -->
+  <category>
+    <pattern>MY NAME IS *</pattern>
+    <template>
+      <think><set name="userName"><star/></set></think>
+      Nice to meet you, <star/>. 🙂 What kind of books do you enjoy reading?
+    </template>
+  </category>
+  <category>
+    <pattern>I AM *</pattern>
+    <condition name="userName">
+      <li value="">  <!-- If we don't have a name yet, treat "I am X" as name -->
+        <think><set name="userName"><star/></set></think>
+        Nice to meet you, <star/>. What kind of books do you like?
+      </li>
+      <li>  <!-- If userName already set, "I am ..." could be something else -->
+        Thanks for telling me, <get name="userName"/>. Let's talk about books. What genre of books do you like?
+      </li>
+    </condition>
+  </category>
+  <category>
+    <pattern>IT'S *</pattern>
+    <template><srai>MY NAME IS <star/></srai></template>
+  </category>
+  <!-- If user just says their name without context, e.g. "Alice" -->
+ <category>
+  <pattern>ALICE</pattern>
+  <template>
+    <think><set name="userName">Alice</set></think>
+    Hello Alice! What kind of books do you like?
+  </template>
+</category>
+  
+  <!-- Asking for preferences if user says they like or want something -->
+  <category>
+    <pattern>I LIKE *</pattern>
+    <template>
+      <think><set name="userPreference"><star/></set></think>
+      Got it. You like <star/>. What genre of books is that? Or do you mean you want a book about <star/>?
+    </template>
+  </category>
+  <category>
+    <pattern>I LOVE *</pattern>
+    <template><srai>I LIKE <star/></srai></template>
+  </category>
+  <category>
+    <pattern>I ENJOY *</pattern>
+    <template><srai>I LIKE <star/></srai></template>
+  </category>
+  
+  <!-- Genre-specific Recommendations -->
+  <category>
+    <pattern>*SCIENCE FICTION*</pattern>
+    <template>
+      <think><set name="userGenre">SCIENCE FICTION</set></think>
+      Since you enjoy science fiction, I would recommend <b>“Dune” by Frank Herbert</b>. It’s a classic sci-fi novel with amazing world-building!
+    </template>
+  </category>
+  <category>
+    <pattern>*FANTASY*</pattern>
+    <template>
+      <think><set name="userGenre">FANTASY</set></think>
+      If you’re into fantasy, I suggest <b>“The Hobbit” by J.R.R. Tolkien</b>. It’s a wonderful fantasy adventure and a true classic.
+    </template>
+  </category>
+  <category>
+    <pattern>*MYSTERY*</pattern>
+    <template>
+      <think><set name="userGenre">MYSTERY</set></think>
+      For mystery, you can’t go wrong with <b>“Gone Girl” by Gillian Flynn</b> – a thrilling modern mystery full of twists and turns.
+    </template>
+  </category>
+  <category>
+    <pattern>*THRILLER*</pattern>
+    <template><srai>*MYSTERY*</srai></template>  <!-- treat thriller as mystery for our purposes -->
+  </category>
+  <category>
+    <pattern>*ROMANCE*</pattern>
+    <template>
+      <think><set name="userGenre">ROMANCE</set></think>
+      A great romance novel is <b>“Pride and Prejudice” by Jane Austen</b> – classic, witty, and full of heart.
+    </template>
+  </category>
+  <category>
+    <pattern>*HORROR*</pattern>
+    <template>
+      <think><set name="userGenre">HORROR</set></think>
+      Feeling brave? 😄 I recommend <b>“The Shining” by Stephen King</b> if you want a scary read. It’s truly chilling!
+    </template>
+  </category>
+  <category>
+    <pattern>*SCARY*</pattern>
+    <template><srai>*HORROR*</srai></template>
+  </category>
+  <category>
+    <pattern>*HISTORY*</pattern>
+    <template>
+      <think><set name="userGenre">HISTORY</set></think>
+      A fascinating historical book is <b>“Sapiens: A Brief History of Humankind” by Yuval Noah Harari</b>. It’s non-fiction but very insightful!
+    </template>
+  </category>
+  <category>
+    <pattern>*NONFICTION*</pattern>
+    <template><srai>*HISTORY*</srai></template>  <!-- using Sapiens as a general non-fiction rec -->
+  </category>
+  
+  <!-- Mood-based recommendations -->
+  <category>
+    <pattern>*UPLIFTING*</pattern>
+    <template>
+      You want something uplifting? I’d recommend <b>“The Alchemist” by Paulo Coelho</b>. It’s an inspiring and positive story that many people love.
+    </template>
+  </category>
+  <category>
+    <pattern>*INSPIRING*</pattern>
+    <template><srai>*UPLIFTING*</srai></template>
+  </category>
+  <category>
+    <pattern>*FUNNY*</pattern>
+    <template>
+      In the mood for humor? Try <b>“The Hitchhiker’s Guide to the Galaxy” by Douglas Adams</b>. It’s incredibly funny and inventive. 😄
+    </template>
+  </category>
+  <category>
+    <pattern>*SAD*</pattern>
+    <template>
+      If you’re feeling down, maybe a heartwarming book like <b>“The Little Prince” by Antoine de Saint-Exupéry</b> could be nice. It’s a gentle, thoughtful read.
+    </template>
+  </category>
+  
+  <!-- Additional small talk or user queries out of scope -->
+  <category>
+    <pattern>DO YOU LIKE MUSIC</pattern>
+    <template>I do enjoy music, but I love books even more. 🎵 By the way, what’s your favorite book genre?</template>
+  </category>
+  <category>
+    <pattern>WHO ARE YOU</pattern>
+    <template>I’m BookBot, a chatbot that can suggest books for you. 😊 I’m like a friendly librarian in your computer!</template>
+  </category>
+  
+  <!-- Asking for another recommendation -->
+  <category>
+    <pattern>*ANOTHER*</pattern>
+    <template>
+      Sure<condition name="userName"><li> <get name="userName"/>,</li></condition> no problem. 
+      <condition name="userGenre">
+        <li value="SCIENCE FICTION">Another great sci-fi book is <b>“Ender’s Game” by Orson Scott Card</b> – it’s exciting and thought-provoking.</li>
+        <li value="FANTASY">You might also like <b>“Harry Potter and the Sorcerer’s Stone” by J.K. Rowling</b> if you haven’t read it yet – a modern fantasy favorite.</li>
+        <li value="MYSTERY">Maybe try <b>“The Girl with the Dragon Tattoo” by Stieg Larsson</b> – a gripping mystery thriller from Sweden.</li>
+        <li value="ROMANCE">Another wonderful romance is <b>“Me Before You” by Jojo Moyes</b> – heartfelt and emotional.</li>
+        <li value="HORROR">Another horror recommendation: <b>“Dracula” by Bram Stoker</b>, a timeless classic that defined vampire stories. 🦇</li>
+        <li value="HISTORY">For history enthusiasts, <b>“Guns, Germs, and Steel” by Jared Diamond</b> is an enlightening read on world history.</li>
+        <li> How about a different genre? Feel free to tell me if you’re interested in something else!</li>
+      </condition>
+    </template>
+  </category>
+  <category>
+    <pattern>I READ THAT</pattern>
+    <template><srai>*ANOTHER*</srai></template>
+  </category>
+  <category>
+    <pattern>I HAVE READ THAT</pattern>
+    <template><srai>*ANOTHER*</srai></template>
+  </category>
+  
+  <!-- Asking for description or about the book -->
+  <category>
+    <pattern>WHAT IS DUNE ABOUT</pattern>
+    <template>“Dune” is an epic science fiction story set on a desert planet called Arrakis. It involves political intrigue, battles for control of a valuable resource, and a hero’s journey – a very rich and immersive tale.</template>
+  </category>
+  <category>
+    <pattern>TELL ME ABOUT THE HOBBIT</pattern>
+    <template>“The Hobbit” is a fantasy adventure about a hobbit named Bilbo Baggins who goes on a journey with dwarves to reclaim treasure from a dragon. It’s full of magic, courage, and fun characters.</template>
+  </category>
+  <category>
+    <pattern>WHAT IS * ABOUT</pattern>
+    <template>I can give a brief idea if I recommended it. Could you remind me the book’s name?</template>
+  </category>
+  
+  <!-- Thank you and Goodbye handling -->
+  <category>
+    <pattern>THANK YOU</pattern>
+    <template>You’re welcome<condition name="userName"><li value=""></li><li>, <get name="userName"/></li></condition>! Happy reading!</template>
+  </category>
+  <category>
+    <pattern>THANKS</pattern>
+    <template><srai>THANK YOU</srai></template>
+  </category>
+  <category>
+    <pattern>BYE</pattern>
+    <template>Goodbye<condition name="userName"><li value=""></li><li>, <get name="userName"/></li></condition>! It was a pleasure helping you. 📖 Have a great day!</template>
+  </category>
+  <category>
+    <pattern>GOODBYE</pattern>
+    <template><srai>BYE</srai></template>
+  </category>
+  
+  <!-- Fallback for anything not caught above -->
+  <category>
+    <pattern>*</pattern>
+    <template>I’m sorry, I’m not sure how to respond to that. I can help you find a book to read – you can tell me a genre you like or ask for a recommendation.</template>
+  </category>
+
+<category>
+    <pattern>Click node to edit pattern</pattern>
+    <template>Click node to edit template</template>
+</category>
+<category>
+    <pattern></pattern>
+    <template></template>
+</category>
+</aiml>
